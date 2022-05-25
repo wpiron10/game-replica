@@ -1,0 +1,55 @@
+/* header.scss */
+
+.header {
+  height: 46px;
+  width: 100%;
+  border: 2px solid red;
+  display: flex;
+
+  .header-container {
+    width: 100%;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+    // flex-direction: row;
+    // border: 2px solid blue;
+
+    .header-logo {
+      width: 20%;
+      display: flex;
+      margin: 0;
+      align-items: center;
+      // border: 2px solid green;
+      .logo {
+        width: 150px;
+        height: 35px;
+      }
+    }
+
+    .header-menu {
+      display: flex;
+      margin: 0;
+      justify-content: space-between;
+      flex-direction: row;
+      width: 20%;
+      align-items: center;
+      h2 {
+        color: white;
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0;
+        white-space: nowrap;
+      }
+      button {
+        height: 35px;
+        width: 84px;
+        top: 0px;
+        border-radius: 8px;
+        border: none;
+        margin: 0;
+        background-color: #ff4655;
+      }
+    }
+  }
+}
