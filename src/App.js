@@ -6,7 +6,8 @@ import "./App.scss";
 import Header from "./components/Header/Header";
 
 // imports des pages
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
+import Game from "./pages/Game/Game";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleLeft,
@@ -20,10 +21,11 @@ function App() {
     <div className="app">
       <div className="main-container">
         <div className="secondary-container">
-          <Header />
           <Router>
+            <Header />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/game/:id" element={<Game />} />
             </Routes>
           </Router>
         </div>

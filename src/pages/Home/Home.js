@@ -1,17 +1,19 @@
 import "./Home.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Logo from "./../assets/img/Logo.svg";
+import Logo from "../../assets/img/Logo.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const limit = 20;
-  const ApiKey = "f45fcba7b85f4962a5878f5f6d37b06f";
+  const ApiKey = "339e480322b04471a75133f7583df2a2";
 
   {
     /*         //------------------------- // parent plateforms : game   consoles types // ---------------------------// */
@@ -19,6 +21,7 @@ const Home = () => {
 
   const [parentPlatformSelector, setParentPlatformSelector] = useState("");
   const [parentPlatform, setParentPlatform] = useState(null);
+  const [parentPlatformFamily, setParentPlatformFamily] = useState(null);
 
   {
     /*         //------------------------- // plateforms : game consoles // ---------------------------// */
@@ -27,6 +30,9 @@ const Home = () => {
   //plateforme  : str / num
   const [platformSelector, setPlatformSelector] = useState("");
   const [platform, setPlatform] = useState(null);
+
+  const [orderSelector, setOrderSelector] = useState("");
+  const [order, setOrder] = useState(null);
 
   {
     /*         //------------------------- // API Rawg// ---------------------------// */
@@ -46,8 +52,13 @@ const Home = () => {
           PlatformFilter = PlatformFilter + `&platforms=${platform}`;
         }
 
+        let OrderFilter = "";
+        if (order) {
+          OrderFilter = OrderFilter + `&ordering=${order}`;
+        }
+
         const response = await axios.get(
-          `https://api.rawg.io/api/games?key=${ApiKey}&page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}`
+          `https://api.rawg.io/api/games?key=${ApiKey}&page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
         );
         setData(response.data);
         setIsLoading(false);
@@ -57,7 +68,46 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [search, page, parentPlatform, platform]);
+  }, [search, page, parentPlatform, platform, order]);
+
+  {
+    /*         //------------------------- // Set a game console to a family // ---------------------------// */
+  }
+
+  const isNameContainedInFamily = (name) => {
+    if (
+      name === "PlayStation" ||
+      name === "PlayStation 2" ||
+      name === "PlayStation 2" ||
+      name === "PlayStation 3" ||
+      name === "PlayStation 4" ||
+      name === "PS Vita"
+    ) {
+      return "PlayStation";
+    } else if (name === "Android" || name === "Linux") {
+      return "Linux";
+    } else if (
+      name === "Nintendo" ||
+      name === "Wii U" ||
+      name === "Nintendo Switch" ||
+      name === "Nintendo 3DS"
+    ) {
+      return "Nintendo";
+    } else if (
+      name === "Xbox" ||
+      name === "Xbox One" ||
+      name === "Xbox 360" ||
+      name === "Xbox Series S/X"
+    ) {
+      return "Xbox";
+    } else if (name === "iOS" || name === "macOS") {
+      return "Apple";
+    } else if (name === "PC") {
+      return "PC";
+    } else if (name === "Web") {
+      return "Web";
+    }
+  };
 
   {
     /*         //------------------------- // ParentConsoleList // ---------------------------// */
@@ -65,13 +115,8 @@ const Home = () => {
 
   const ParentConsoleList = (listOfParentPlatforms) => {
     const resultPlatformTabDeduplicate = [];
-    if (listOfParentPlatforms.length !== null) {
+    if (listOfParentPlatforms.length > 1) {
       for (let i = 0; i < listOfParentPlatforms.length; i++) {
-        console.log(
-          listOfParentPlatforms[i].parent_platforms,
-          "listOfParentPlatforms"
-        );
-
         for (
           let j = 0;
           j < listOfParentPlatforms[i].parent_platforms.length;
@@ -82,9 +127,21 @@ const Home = () => {
               listOfParentPlatforms[i].parent_platforms[j].platform.name
             ) === -1
           ) {
-            resultPlatformTabDeduplicate.push(
-              listOfParentPlatforms[i].parent_platforms[j].platform.name
-            );
+            if (parentPlatformFamily) {
+              if (
+                isNameContainedInFamily(
+                  listOfParentPlatforms[i].parent_platforms[j].platform.name
+                ) === parentPlatformFamily
+              ) {
+                resultPlatformTabDeduplicate.push(
+                  listOfParentPlatforms[i].parent_platforms[j].platform.name
+                );
+              }
+            } else if (parentPlatformFamily === null) {
+              resultPlatformTabDeduplicate.push(
+                listOfParentPlatforms[i].parent_platforms[j].platform.name
+              );
+            }
           }
         }
       }
@@ -109,9 +166,21 @@ const Home = () => {
               listOfPlatforms[i].platforms[j].platform.name
             ) === -1
           ) {
-            resultTabDeduplicate.push(
-              listOfPlatforms[i].platforms[j].platform.name
-            );
+            if (parentPlatformFamily) {
+              if (
+                isNameContainedInFamily(
+                  listOfPlatforms[i].platforms[j].platform.name
+                ) === parentPlatformFamily
+              ) {
+                resultTabDeduplicate.push(
+                  listOfPlatforms[i].platforms[j].platform.name
+                );
+              }
+            } else if (parentPlatformFamily === null) {
+              resultTabDeduplicate.push(
+                listOfPlatforms[i].platforms[j].platform.name
+              );
+            }
           }
         }
       }
@@ -120,15 +189,22 @@ const Home = () => {
     return resultTabDeduplicate;
   };
 
+  const isFilterOrSortApplied = () => {
+    if (platform || parentPlatform || order) {
+      return true;
+    }
+  };
+
   return isLoading === true ? (
     <div>
-      <p>En attente de réponse</p>
+      <p>chargement</p>
     </div>
   ) : (
     <div className="home-container">
       <div className="search-section">
         <div className="search-title-searchbar">
           <img className="logo" src={Logo} />
+
           <div className="searchbar">
             <input
               placeholder="Search for a game"
@@ -146,125 +222,200 @@ const Home = () => {
           <div>
             {search.length >= 1 && (
               <div className="search-info">
-                <h3>Search result for "{search}"</h3>
+                <div className="search-result">
+                  <h3>Search result for </h3>
+                  <h3 className="search-game-request"> "{search}"</h3>
+                </div>
                 <h4>{data.count} games</h4>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/*         //------------------------- // select a  PARENT PLATFORM // ---------------------------// */}
       <div className="filters-section">
         <div>
           <label for="platform-select">Platform:</label>
 
-          {/*         //------------------------- // select a  PARENT PLATFORM // ---------------------------// */}
-
           <select
+            className="select-filter"
             name="platforms"
             id="platform-select"
             onChange={(event) => {
-              setParentPlatformSelector("");
-              console.log(event.target.value, "<<<<<<<<<<<<<<<<<<<<  event1");
+              setParentPlatformSelector(null);
+              setParentPlatformFamily(null);
+
+              // console.log(event.target.value, "<<<<<<<<<<<<<<<<<<<<  event1");
               if (event.target.value === "Android") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Linux");
               } else if (event.target.value === "Apple Macintosh") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Apple");
               } else if (event.target.value === "Linux") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Linux");
               } else if (event.target.value === "Nintendo") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Nintendo");
               } else if (event.target.value === "PC") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("PC");
               } else if (event.target.value === "PlayStation") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("PlayStation");
               } else if (event.target.value === "Web") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Web");
               } else if (event.target.value === "Xbox") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Xbox");
               } else if (event.target.value === "iOS") {
                 setParentPlatformSelector(event.target.value);
+                setParentPlatformFamily("Xbox");
               }
             }}
           >
-            <option value="">--Please choose an option--</option>
+            <option className="option-filter" value={null}>
+              --Please choose an option--
+            </option>
             {ParentConsoleList(data.results)
               .sort()
               .map((item, index) => {
-                console.log(item);
+                // console.log(item);
                 return (
-                  <option key={index} value={item}>
+                  <option className="option-filter" key={index} value={item}>
                     {item}
                   </option>
                 );
               })}
           </select>
         </div>
+
+        {/*         //------------------------- // select a  CONSOLE / PLATFORM// ---------------------------// */}
         <div>
           <label for="platform-select">Type :</label>
-
-          {/*         //------------------------- // select a  CONSOLE / PLATFORM// ---------------------------// */}
-
           <select
+            className="select-filter"
             name="type"
             id="type-select"
             onChange={(event) => {
               setPlatformSelector("");
-              console.log(event.target.value, "<<<<<<<<<<<<<<<<<<<<  event2");
+              setParentPlatformFamily(null);
+
+              // console.log(event.target.value, "<<<<<<<<<<<<<<<<<<<<  event2");
               if (event.target.value === "Android") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Linux");
               } else if (event.target.value === "Linux") {
                 setPlatformSelector("Linux");
+                setParentPlatformFamily("Linux");
               } else if (event.target.value === "Nintendo Switch") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Nintendo");
               } else if (event.target.value === "Nintendo 3DS") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Nintendo");
               } else if (event.target.value === "PC") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("PC");
               } else if (event.target.value === "PS Vita") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("PlayStation");
               } else if (event.target.value === "PlayStation 2") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("PlayStation");
               } else if (event.target.value === "PlayStation 3") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("PlayStation");
               } else if (event.target.value === "PlayStation 4") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("PlayStation");
               } else if (event.target.value === "Wii U") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Nintendo");
               } else if (event.target.value === "Web") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Web");
               } else if (event.target.value === "Xbox One") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Xbox");
               } else if (event.target.value === "Xbox 360") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Xbox");
               } else if (event.target.value === "Xbox Series S/X") {
                 setPlatformSelector(event.target.value);
-              } else if (event.target.value === "ios") {
+                setParentPlatformFamily("Xbox");
+              } else if (event.target.value === "iOS") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Apple");
               } else if (event.target.value === "macOS") {
                 setPlatformSelector(event.target.value);
+                setParentPlatformFamily("Apple");
               }
             }}
           >
-            <option value="">--Please choose an option--</option>
+            <option className="option-filter" value={null}>
+              --Please choose an option--
+            </option>
             {consoleList(data.results)
               .sort()
               .map((item, index) => {
-                console.log(item);
                 return (
-                  <option key={index} value={item}>
+                  <option className="option-filter" key={index} value={item}>
                     {item}
                   </option>
                 );
               })}
+          </select>
+        </div>
+
+        {/*         //------------------------- // ORDER : SORT BY // ---------------------------// */}
+
+        <div>
+          <label for="platform-select">Sort by:</label>
+          <select
+            className="select-filter"
+            onChange={(event) => {
+              setOrderSelector("");
+              if (event.target.value === "Name") {
+                setOrderSelector(event.target.value);
+                // console.log(orderSelector, "name");
+              } else if (event.target.value === "Release Date") {
+                setOrderSelector(event.target.value);
+                // console.log(orderSelector, "date");
+              } else if (event.target.value === "Rating") {
+                setOrderSelector(event.target.value);
+                // console.log(orderSelector, "rate");
+              }
+            }}
+          >
+            <option className="option-filter" value="Name">
+              Default
+            </option>
+
+            <option className="option-filter" value="Name">
+              Name
+            </option>
+            <option className="option-filter" value="Release Date">
+              Release Date
+            </option>
+            <option className="option-filter" value="Rating">
+              Grade
+            </option>
           </select>
         </div>
 
         {/*         //------------------------- // Apply filters // ---------------------------// */}
 
         <div>
-          Filter :
           <button
             onClick={() => {
+              {
+                /*         //------------------------- // Apply filters on Parent Platform // ---------------------------// */
+              }
+
               setParentPlatform();
 
               if (parentPlatformSelector === "Android") {
@@ -285,6 +436,10 @@ const Home = () => {
                 setParentPlatform(3);
               } else if (parentPlatformSelector === "iOS") {
                 setParentPlatform(4);
+              }
+
+              {
+                /*         //------------------------- // Apply filters on Platforms // ---------------------------// */
               }
 
               if (platformSelector === "Android") {
@@ -329,12 +484,24 @@ const Home = () => {
               } else if (platformSelector === "Xbox Series S/X") {
                 setPlatform(186);
                 setParentPlatform(3);
-              } else if (platformSelector === "ios") {
+              } else if (platformSelector === "iOS") {
                 setPlatform(3);
                 setParentPlatform(4);
               } else if (platformSelector === "macOS") {
                 setPlatform(5);
                 setParentPlatform(5);
+              }
+
+              {
+                /*         //------------------------- // Apply ordering on filters // ---------------------------// */
+              }
+              setOrder();
+              if (orderSelector === "Name") {
+                setOrder("name");
+              } else if (orderSelector === "Release Date") {
+                setOrder("released");
+              } else if (orderSelector === "Rating") {
+                setOrder("rating");
               }
             }}
           >
@@ -342,7 +509,21 @@ const Home = () => {
           </button>
         </div>
       </div>
-
+      <div className="button-filter-effect">
+        {isFilterOrSortApplied() && (
+          <button
+            onClick={() => {
+              setPlatform(null);
+              setParentPlatform(null);
+              setParentPlatformSelector(null);
+              setPlatformSelector(null);
+              setOrder(null);
+            }}
+          >
+            Reset Filters and Sort
+          </button>
+        )}
+      </div>
       {/*         //------------------------- // Map sur les jeux // ---------------------------// */}
 
       <div className="result-section">
@@ -350,12 +531,18 @@ const Home = () => {
         <div className="results">
           {data.results.map((game, index) => {
             return (
-              <div className="result-card" key={index}>
-                <img className="result-img" src={game.background_image} />
-                <div className="result-info">
-                  <h4 className="result-title">{game.name}</h4>
+              <Link to={`/game/${game.id}`}>
+                <div
+                  className="result-card"
+                  key={index}
+                  onClick={() => navigate("/Game")}
+                >
+                  <img className="result-img" src={game.background_image} />
+                  <div className="result-info">
+                    <h4 className="result-title">{game.name}</h4>
+                  </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

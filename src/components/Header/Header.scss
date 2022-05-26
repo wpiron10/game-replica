@@ -3,8 +3,10 @@
 .header {
   height: 46px;
   width: 100%;
-  border: 2px solid red;
+  border-bottom: 2px solid #ff4655;
   display: flex;
+  position: sticky;
+  top: 0px;
 
   .header-container {
     width: 100%;
@@ -24,6 +26,9 @@
       .logo {
         width: 150px;
         height: 35px;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
 
@@ -49,6 +54,12 @@
         border: none;
         margin: 0;
         background-color: #ff4655;
+        color: white;
+        font-weight: 600;
+        &:hover {
+          cursor: pointer;
+          background-color: darken(#ff4655, 5);
+        }
       }
     }
   }
