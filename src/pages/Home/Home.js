@@ -509,7 +509,11 @@ const Home = () => {
                   key={index}
                   onClick={() => navigate("/Game")}
                 >
-                  <img className="result-img" src={game.background_image} />
+                  <img
+                    className="result-img"
+                    src={game.background_image}
+                    alt={game.name}
+                  />
                   <div className="result-info">
                     <h4 className="result-title">{game.name}</h4>
                   </div>
