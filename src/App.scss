@@ -2,7 +2,6 @@
 
 * {
   box-sizing: border-box;
-  margin: 0 auto;
 }
 
 body {
@@ -14,9 +13,11 @@ body {
 .app {
   background-color: black;
   height: 100%;
+
   .main-container {
     width: 80%;
-    overflow: hidden;
+    margin: 0 auto;
+
     text-overflow: ellipsis;
     white-space: nowrap;
     background-color: #1f2023;

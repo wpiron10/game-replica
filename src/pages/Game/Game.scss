@@ -1,9 +1,494 @@
-.game-section {
+.game-page {
   display: flex;
-  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
 
-  .game-img {
-    height: 200px;
-    width: 200px;
+  .game-section {
+    margin-top: 30px;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    .game-subsection-left {
+      width: 50%;
+
+      height: 120vh;
+      // border: 3px red solid;
+
+      .subsection-left-sticky-content {
+        top: 50px;
+        position: sticky;
+
+        .subsection-left-title {
+          display: flex;
+          margin-bottom: 20px;
+          font-size: 1.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: auto;
+          margin-bottom: 0;
+          // bottom: 10px;
+        }
+        .subsection-left-title-line {
+          width: 30%;
+          height: 10px;
+          border-top: #ff4655 solid 10px;
+          margin-bottom: 10px;
+        }
+        .game-img {
+          height: 500px;
+          width: 500px;
+          object-fit: cover;
+          background-position: center;
+          border-radius: 10px;
+        }
+      }
+    }
+    .game-subsection-right {
+      margin-top: 80px;
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      // border: 3px purple solid;
+
+      align-content: center;
+      .subsection-right-sub-section {
+        width: 100%;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        // border: 3px green solid;
+        box-sizing: border-box;
+
+        .right-content-collection-review {
+          display: flex;
+          flex-direction: row;
+          width: 50%;
+          margin-bottom: 10px;
+          // border: 3px red solid;
+          height: 10%;
+
+          .right-content-collection-review-btn {
+            border-radius: 5px;
+            border: 2px white solid;
+            height: 50px;
+            display: flex;
+            padding-left: 5px;
+            color: grey;
+            width: 100%;
+            margin-right: 10px;
+            transition: all 500ms;
+            &:hover {
+              cursor: pointer;
+              color: white;
+              transform: translateY(-5px);
+            }
+            .right-content-collection-review-btn-col-1 {
+              width: 80%;
+
+              // border: 3px red solid;
+              #Collection {
+                color: grey;
+
+                margin: 0;
+                &:hover {
+                  color: green;
+                }
+              }
+            }
+            .right-content-collection-review-btn-col-2 {
+              width: 20%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              // border: 3px red solid;
+            }
+          }
+        }
+        .subsection-right-columns {
+          display: flex;
+          width: 100%;
+          height: 100%;
+
+          // border: 3px yellow solid;
+          .right-content-info-col-1,
+          .right-content-info-col-2 {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+
+            height: 100%;
+            // border: 3px blue solid;
+            .subsection-right-content {
+              height: 30%;
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              // border: 3px brown solid;
+              overflow: hidden;
+              flex-direction: column;
+              .subsection-right-label {
+                height: 30%;
+                margin: 0;
+
+                color: grey;
+
+                // border: 3px lightcoral solid;
+              }
+              .subsection-right-info {
+                display: flex;
+
+                flex-direction: row;
+                height: 70%;
+                // border: 3px orange solid;
+
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                -webkit-hyphens: auto; /* pour Safari */
+                hyphens: auto;
+              }
+            }
+          }
+        }
+      }
+
+      .subsection-right-about-desc {
+        width: 100%;
+        height: 20%;
+
+        // border: 3px blue solid;
+        box-sizing: border-box;
+        .subsection-right-label {
+          height: 30%;
+          margin: 0;
+          color: grey;
+          // border: 3px lightcoral solid;
+        }
+
+        .subsection-right-desc {
+          // display: inline-block;
+          // border: 3px yellow solid;
+          overflow: hidden;
+          width: 100%;
+          height: 100%;
+          word-break: normal !important;
+          text-overflow: ellipsis;
+
+          -webkit-box-orient: vertical;
+          text-align: justify;
+          word-break: break-word;
+          white-space: none;
+          -webkit-box-orient: vertical;
+          -webkit-hyphens: auto; /* pour Safari */
+          hyphens: auto;
+        }
+        .subsection-right-desc-see-more {
+          // display: inline-block;
+          // border: 3px blue solid;
+          overflow: hidden;
+          width: 100%;
+          height: 100%;
+          word-break: normal !important;
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 2;
+          line-clamp: 3 !important;
+          -webkit-box-orient: vertical;
+          text-align: justify;
+          word-break: break-word;
+          white-space: none;
+          -webkit-box-orient: vertical;
+          -webkit-hyphens: auto; /* pour Safari */
+          hyphens: auto;
+          white-space: pre-line;
+        }
+        .see-more-btn {
+          // border: 3px lightblue solid;
+          display: flex;
+          justify-content: center;
+
+          .see-more {
+            height: 35px;
+
+            width: 120px;
+            top: 0px;
+            border-radius: 8px;
+            border: none;
+            margin: 0;
+            color: white;
+            background-color: #1f2023;
+            font-weight: 600;
+            border: 2px solid white;
+
+            box-shadow: inset 0 0 0 0 #ff4655;
+            -webkit-transition: ease-out 0.7s;
+            -moz-transition: ease-out 0.7s;
+            transition: ease-out 0.7s;
+            // transform: scale(1) 3s;
+            &:hover {
+              cursor: pointer;
+              box-shadow: inset 180px 0 0 0 #ff4655;
+              border: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .result-cards {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+
+    .result-card {
+      height: 250px;
+      min-width: 200px;
+      width: 200px;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+      // transform: scale(1);
+      text-decoration: none;
+      transition: all 450ms;
+      &:hover {
+        transform: scale(1.01);
+        box-shadow: 1px 1px 1px 1px #c4c4c4fa;
+      }
+
+      .result-img {
+        border-radius: 10px;
+        width: 100%;
+        object-fit: cover;
+        box-sizing: border-box;
+        height: 100%;
+        object-position: center;
+      }
+      .result-info {
+        color: white;
+        background-color: rgb(0, 0, 0, 50%);
+        text-overflow: ellipsis;
+        position: relative;
+        bottom: 80px;
+        box-sizing: border-box;
+        border-radius: 0 0 10px 10px;
+        height: 20%;
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .ratings-section {
+    .ratings-subsection-title {
+      width: 10%;
+
+      .ratings-title {
+        margin-bottom: 0px;
+      }
+      .ratings-title-line {
+        width: 50%;
+        height: 19px;
+        margin-top: 0;
+        border-top: #ff4655 solid 10px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .discover-other-game-ratings {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 20px;
+      // border: 3px red solid;
+
+      .discover-other-game-percents {
+        width: 100%;
+        // border: 3px green solid;
+        padding-left: 40px;
+        .discover-other-game-percent-display {
+          display: flex;
+          flex-direction: row;
+          // border: 3px red solid;
+          width: 100%;
+          .discover-other-game-percent {
+            // border: 3px orange solid;
+            width: 80%;
+            border-radius: 5px;
+            padding-right: 5px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 90%;
+            font-size: 0.8em;
+            text-shadow: 1px 1px 2px grey, 0 0 1em black, 0 0 0.2em black;
+            font-size: 1em;
+
+            animation: progress-bar 3000ms;
+            transition: all 2250ms;
+            transform-origin: left;
+          }
+          .elem-under-ten-percent {
+            // width: 20%;
+            display: flex;
+            align-items: center;
+            padding-left: 5px;
+            // border: 3px blue solid;
+          }
+        }
+
+        @keyframes progress-bar {
+          0% {
+            transform: scaleX(0);
+            opacity: 0.1;
+          }
+          17% {
+            transform: scaleX(0.18);
+            opacity: 0.6;
+          }
+          24% {
+            transform: scaleX(0.4);
+            opacity: 0.7;
+          }
+          46% {
+            transform: scaleX(0.7);
+            opacity: 0.8;
+          }
+          100% {
+            transform: scaleX(1);
+            opacity: 1;
+          }
+        }
+      }
+      // &:after {
+      //   transform: scaleX(1);
+      // }
+    }
+  }
+
+  .discover-other-game-section {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    width: 100%;
+    height: 100%;
+    // border: 3px red solid;
+    h3 {
+      border-bottom: #ff4655 solid 10px;
+    }
+  }
+
+  .reviews-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h3 {
+      border-bottom: #ff4655 solid 10px;
+    }
+    // border: 3px purple solid;
+    width: 100%;
+    .reviews {
+      // border: 3px red solid;
+      width: 100%;
+      .review {
+        // border: 3px blue solid;
+        width: 100%;
+        padding: 10px;
+        background-color: #383737;
+        border-radius: 10px;
+        transition: all 500ms;
+        &:hover {
+          border: 1px #fafafafa solid;
+          transform: translateY(-10px);
+          background-color: #3e3c3c;
+          box-shadow: 1px 1px 2px 1px #fafafafa;
+        }
+        .review-content-row1 {
+          width: 100%;
+          // border: 3px orange solid;
+          .review-title {
+            // border: 3px lightblue solid;
+            width: 100%;
+            height: 100%;
+            padding-left: 10px;
+            font-weight: 600;
+          }
+          .review-comment {
+            // border: 3px lightcoral solid;
+            box-sizing: border-box;
+            height: 100%;
+            text-align: justify;
+            word-break: break-all;
+            width: 100%;
+            padding: 10px;
+            text-align: justify;
+            word-break: break-word;
+            white-space: none;
+            -webkit-box-orient: vertical;
+            -webkit-hyphens: auto; /* pour Safari */
+            hyphens: auto;
+            white-space: pre-line;
+          }
+        }
+        .review-content-row2 {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          .review-user {
+            // border: 3px lightgreen solid;
+            height: 100%;
+            width: 70%;
+            display: flex;
+            padding-left: 10px;
+            justify-content: flex-start;
+            align-items: center;
+            .review-profile-img {
+              width: 30px;
+              height: 30px;
+              object-fit: cover;
+              object-position: center;
+              border-radius: 50%;
+              margin-right: 10px;
+            }
+          }
+          .review-thumb-vote {
+            // border: 3px lightseagreen solid;
+            height: 100%;
+            width: 30%;
+            display: flex;
+            .review-thumb-up,
+            .review-thumb-down {
+              display: flex;
+              // border: 3px orange solid;
+              height: 100%;
+              width: 50%;
+              gap: 15px;
+              justify-content: center;
+              align-items: center;
+            }
+            .icon-thumb {
+              transform: scale(1);
+              transition: all 450ms;
+              &:hover {
+                cursor: pointer;
+              }
+              &:active {
+                transform: scale(1.2);
+                transition: 1ms;
+                transform: rotate(10deg);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

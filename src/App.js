@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useRef } from "react";
+
 // scss
 import "./App.scss";
 
@@ -13,10 +15,24 @@ import {
   faAngleLeft,
   faAngleRight,
   faMagnifyingGlass,
+  faBookmark,
+  faMessage,
+  faThumbsDown,
+  faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faMagnifyingGlass, faAngleRight, faAngleLeft);
+library.add(
+  faMagnifyingGlass,
+  faAngleRight,
+  faAngleLeft,
+  faBookmark,
+  faMessage,
+  faThumbsDown,
+  faThumbsUp
+);
 
 function App() {
+  const aboutRef = useRef(null); //represents about section
+
   return (
     <div className="app">
       <div className="main-container">
@@ -25,7 +41,7 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/game/:id" element={<Game />} />
+              <Route path="/game/:id" element={<Game aboutRef={aboutRef} />} />
             </Routes>
           </Router>
         </div>

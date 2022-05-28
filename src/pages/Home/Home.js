@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "../../assets/img/Logo.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,19 +13,14 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const limit = 20;
-  const ApiKey = "339e480322b04471a75133f7583df2a2";
 
-  {
-    /*         //------------------------- // parent plateforms : game   consoles types // ---------------------------// */
-  }
+  /*         //------------------------- // parent plateforms : game   consoles types // ---------------------------// */
 
   const [parentPlatformSelector, setParentPlatformSelector] = useState("");
   const [parentPlatform, setParentPlatform] = useState(null);
   const [parentPlatformFamily, setParentPlatformFamily] = useState(null);
 
-  {
-    /*         //------------------------- // plateforms : game consoles // ---------------------------// */
-  }
+  /*         //------------------------- // plateforms : game consoles // ---------------------------// */
 
   //plateforme  : str / num
   const [platformSelector, setPlatformSelector] = useState("");
@@ -34,9 +29,7 @@ const Home = () => {
   const [orderSelector, setOrderSelector] = useState("");
   const [order, setOrder] = useState(null);
 
-  {
-    /*         //------------------------- // API Rawg// ---------------------------// */
-  }
+  /*         //------------------------- // API Rawg// ---------------------------// */
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +51,8 @@ const Home = () => {
         }
 
         const response = await axios.get(
-          `https://api.rawg.io/api/games?key=${ApiKey}&page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
+          `https://game-replica-backend.herokuapp.com/?page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
+          // `https://api.rawg.io/api/games?key=${ApiKey}&page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
         );
         setData(response.data);
         setIsLoading(false);
@@ -70,9 +64,7 @@ const Home = () => {
     fetchData();
   }, [search, page, parentPlatform, platform, order]);
 
-  {
-    /*         //------------------------- // Set a game console to a family // ---------------------------// */
-  }
+  /*         //------------------------- // Set a game console to a family // ---------------------------// */
 
   const isNameContainedInFamily = (name) => {
     if (
@@ -109,9 +101,7 @@ const Home = () => {
     }
   };
 
-  {
-    /*         //------------------------- // ParentConsoleList // ---------------------------// */
-  }
+  /*         //------------------------- // ParentConsoleList // ---------------------------// */
 
   const ParentConsoleList = (listOfParentPlatforms) => {
     const resultPlatformTabDeduplicate = [];
@@ -150,9 +140,7 @@ const Home = () => {
     return resultPlatformTabDeduplicate;
   };
 
-  {
-    /*         //------------------------- // consoleList // ---------------------------// */
-  }
+  /*         //------------------------- // consoleList // ---------------------------// */
 
   const consoleList = (listOfPlatforms) => {
     const resultTabDeduplicate = [];
@@ -218,7 +206,9 @@ const Home = () => {
               icon="fa-solid fa-magnifying-glass"
             />
           </div>
-          <div>{search.length < 1 && <h3>Search {data.count} games</h3>}</div>
+          <div className="search-info">
+            {search.length < 1 && <h3>Search {data.count} games</h3>}
+          </div>
           <div>
             {search.length >= 1 && (
               <div className="search-info">
@@ -233,10 +223,10 @@ const Home = () => {
         </div>
       </div>
 
-      {/*         //------------------------- // select a  PARENT PLATFORM // ---------------------------// */}
+      {/* // ------------------------- // select a  PARENT PLATFORM // ---------------------------//  */}
       <div className="filters-section">
         <div>
-          <label for="platform-select">Platform:</label>
+          <label htmlFor="platform-select">Platform:</label>
 
           <select
             className="select-filter"
@@ -295,7 +285,7 @@ const Home = () => {
 
         {/*         //------------------------- // select a  CONSOLE / PLATFORM// ---------------------------// */}
         <div>
-          <label for="platform-select">Type :</label>
+          <label htmlFor="platform-select">Type :</label>
           <select
             className="select-filter"
             name="type"
@@ -374,7 +364,7 @@ const Home = () => {
         {/*         //------------------------- // ORDER : SORT BY // ---------------------------// */}
 
         <div>
-          <label for="platform-select">Sort by:</label>
+          <label htmlFor="platform-select">Sort by:</label>
           <select
             className="select-filter"
             onChange={(event) => {
@@ -531,7 +521,7 @@ const Home = () => {
         <div className="results">
           {data.results.map((game, index) => {
             return (
-              <Link to={`/game/${game.id}`}>
+              <Link to={`/game/${game.id}`} key={index}>
                 <div
                   className="result-card"
                   key={index}
