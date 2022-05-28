@@ -223,7 +223,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* // ------------------------- // select a  PARENT PLATFORM // ---------------------------//  */}
       <div className="filters-section">
         <div>
           <label htmlFor="platform-select">Platform:</label>
@@ -283,7 +282,6 @@ const Home = () => {
           </select>
         </div>
 
-        {/*         //------------------------- // select a  CONSOLE / PLATFORM// ---------------------------// */}
         <div>
           <label htmlFor="platform-select">Type :</label>
           <select
@@ -361,8 +359,6 @@ const Home = () => {
           </select>
         </div>
 
-        {/*         //------------------------- // ORDER : SORT BY // ---------------------------// */}
-
         <div>
           <label htmlFor="platform-select">Sort by:</label>
           <select
@@ -397,15 +393,9 @@ const Home = () => {
           </select>
         </div>
 
-        {/*         //------------------------- // Apply filters // ---------------------------// */}
-
         <div>
           <button
             onClick={() => {
-              {
-                /*         //------------------------- // Apply filters on Parent Platform // ---------------------------// */
-              }
-
               setParentPlatform();
 
               if (parentPlatformSelector === "Android") {
@@ -426,10 +416,6 @@ const Home = () => {
                 setParentPlatform(3);
               } else if (parentPlatformSelector === "iOS") {
                 setParentPlatform(4);
-              }
-
-              {
-                /*         //------------------------- // Apply filters on Platforms // ---------------------------// */
               }
 
               if (platformSelector === "Android") {
@@ -482,9 +468,6 @@ const Home = () => {
                 setParentPlatform(5);
               }
 
-              {
-                /*         //------------------------- // Apply ordering on filters // ---------------------------// */
-              }
               setOrder();
               if (orderSelector === "Name") {
                 setOrder("name");
@@ -514,7 +497,6 @@ const Home = () => {
           </button>
         )}
       </div>
-      {/*         //------------------------- // Map sur les jeux // ---------------------------// */}
 
       <div className="result-section">
         <h2>Most Relevance Games</h2>
