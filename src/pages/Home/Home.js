@@ -191,7 +191,7 @@ const Home = () => {
     <div className="home-container">
       <div className="search-section">
         <div className="search-title-searchbar">
-          <img className="logo" src={Logo} />
+          <img className="logo" src={Logo} alt="gamepad-logo" />
 
           <div className="searchbar">
             <input
