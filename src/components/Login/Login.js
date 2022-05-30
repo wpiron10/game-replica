@@ -20,15 +20,22 @@ const customStyles = {
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 // Modal.setAppElement("#yourAppElement");
 
-const Login = ({ setSignupModalIsOpen, signupModalIsOpen, setIsOpen }) => {
+const Login = ({
+  setSignupModalIsOpen,
+  signupModalIsOpen,
+  setIsOpen,
+  isOpen,
+  modalIsOpen,
+}) => {
   let subtitle;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
 
   function openModal() {
-    setSignupModalIsOpen(false);
     setIsOpen(true);
+    setSignupModalIsOpen(false);
   }
 
   function afterOpenModal() {
@@ -40,18 +47,36 @@ const Login = ({ setSignupModalIsOpen, signupModalIsOpen, setIsOpen }) => {
     setIsOpen(false);
   }
 
+  const handleLogin = async (event) => {
+    try {
+      event.preventDefault();
+      // setErrorMessage(false);
+
+      if (email.length > 1 && password.length > 1) {
+        const response = await axios.post(
+          "http://localhost:4000/user-login",
+          email,
+          password
+        );
+
+        console.log("connecté", response.data);
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <div>
       <button
         onClick={() => {
           openModal();
-          setSignupModalIsOpen(false);
         }}
       >
         Login
       </button>
       <Modal
-        isOpen={signupModalIsOpen}
+        isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
@@ -60,22 +85,36 @@ const Login = ({ setSignupModalIsOpen, signupModalIsOpen, setIsOpen }) => {
         <button onClick={closeModal}>
           <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
         </button>
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-          Veuillez créer un compte
-        </h2>
-        <form>
-          <input type="text" />
-          <input type="text" />
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Connectez-vous</h2>
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            value={email}
+            onChange={(event) => {
+              const value = event.target.value;
+              setEmail(value);
+            }}
+          />
+          <input
+            type="text"
+            value={password}
+            onChange={(event) => {
+              const value = event.target.value;
+              setPassword(value);
+            }}
+          />
+          <input type="submit" value="Je m'inscris"></input>
         </form>
+
         <div>
-          Déja inscrit ?
+          Vous n'avez pas encore un compte ?
           <div
             onClick={() => {
               closeModal();
               setSignupModalIsOpen(true);
             }}
           >
-            Connectez-vous en cliquant ici!
+            Créez en un en cliquant ici!
           </div>
         </div>
       </Modal>

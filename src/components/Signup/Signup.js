@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useState } from "react";
 import axios from "axios";
-// import SignupModal from "../SignupModal/SignupModal";
 
 const customStyles = {
   content: {
@@ -21,14 +20,22 @@ const customStyles = {
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 // Modal.setAppElement("#header");
 
-const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
+const Signup = ({
+  setIsOpen,
+  modalIsOpen,
+  setSignupModalIsOpen,
+  signupModalIsOpen,
+}) => {
   let subtitle;
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [picture, setPicture] = useState();
+  const [isPictureUploaded, setIsPictureUploaded] = useState();
   const [confirmationPassword, setConfirmationPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
+  const [preview, setPreview] = useState();
 
   const openModal = () => {
     setIsOpen(false);
@@ -37,7 +44,6 @@ const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
 
   const afterOpenModal = () => {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = "orange";
   };
 
   const closeModal = () => {
@@ -46,29 +52,41 @@ const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
 
   const fetchData = async (event) => {
     event.preventDefault();
+    setErrorMessage(false);
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("picture", picture);
+    formData.append("password", password);
+
     if (
       username.length > 1 &&
       email.length > 1 &&
       password.length > 1 &&
       confirmationPassword.length > 1
     ) {
-      setErrorMessage(false);
+      const response = await axios.post(
+        "http://localhost:4000/user-signup",
+        formData
+        //   ,
+        // {
+        //   headers: {
+        //     authorization: "token",
+        //   },
+        // }
+      );
+      setIsPictureUploaded(response.data);
     } else {
       setErrorMessage(true);
     }
-
-    // const response = await axios.post("", {
-    //   username: username,
-    //   email: email,
-    //   password: password,
-    // });
   };
 
   return (
     <div>
       <button onClick={openModal}>Signup</button>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={signupModalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
@@ -77,14 +95,26 @@ const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
         <button
           onClick={() => {
             closeModal();
-            setIsOpen(false);
+            // setIsOpen(false);
           }}
         >
           <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
         </button>
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-          Veuillez vous connecter
-        </h2>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: 10,
+          }}
+        >
+          <h2>Créez votre compte</h2>
+          {preview && (
+            <img
+              style={{ width: 100, height: 100, borderRadius: "50%" }}
+              src={preview}
+            />
+          )}
+        </div>
         <form
           onSubmit={fetchData}
           style={{ display: "flex", flexDirection: "column", gap: "10px" }}
@@ -98,6 +128,19 @@ const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
               setUsername(value);
             }}
           />
+          <input
+            type="file"
+            placeholder="Avatar"
+            // accept=".jpg, .jpeg, .png"
+            onChange={(event) => {
+              const value = event.target.files[0];
+              setPicture(value);
+              // Add a preview picture after upload
+              setPreview(URL.createObjectURL(value));
+            }}
+          />
+
+          {/* <img style={{ width: 100, height: 100 }} src={picture} /> */}
           <input
             type="text"
             placeholder="Email"
@@ -136,14 +179,14 @@ const Signup = ({ setIsOpen, modalIsOpen, setSignupModalIsOpen }) => {
           <input type="submit" value="Je m'inscris"></input>
         </form>
         <div>
-          Vous n'avez pas encore un compte ?
+          Déja inscrit ?
           <div
             onClick={() => {
               closeModal();
               setIsOpen(true);
             }}
           >
-            Créez en un en cliquant ici!
+            Connectez-vous en cliquant ici!
           </div>
         </div>
       </Modal>
