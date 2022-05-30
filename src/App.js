@@ -19,6 +19,7 @@ import {
   faMessage,
   faThumbsDown,
   faThumbsUp,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faMagnifyingGlass,
@@ -26,6 +27,7 @@ library.add(
   faAngleLeft,
   faBookmark,
   faMessage,
+  faCircleXmark,
   faThumbsDown,
   faThumbsUp
 );
