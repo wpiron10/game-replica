@@ -77,16 +77,48 @@ const Game = ({ aboutRef, setFavorites }) => {
                 <div
                   className="right-content-collection-review-btn-col-1"
                   onClick={async () => {
-                    const toAddCookies = {
+                    const cookiesToAdd = {
                       id: data.id,
                       name: data.name,
                       image: data.background_image,
                     };
-                    // console.log(data, "data");
 
-                    const favoriteToStr = JSON.stringify(toAddCookies);
+                    const isCookieAlreadyHere = Cookies.get("userFavorites");
 
-                    setFavorites(favoriteToStr);
+                    if (isCookieAlreadyHere) {
+                      const cookieToObj = JSON.parse(isCookieAlreadyHere);
+
+                      console.log(cookieToObj, "<< isCookieAlreadyHere truthy");
+
+                      for (let i = 0; i < cookieToObj.length; i++) {
+                        console.log(i, "<<<< i");
+                        if (cookieToObj.indexOf(cookiesToAdd.id) === -1) {
+                          console.log(
+                            cookiesToAdd.id,
+                            "<< absent dans le tableau : push"
+                          );
+                        } else if (cookieToObj.indexOf(cookiesToAdd.id)) {
+                          console.log(
+                            cookiesToAdd.id,
+                            "<< déjà présent dans le tableau : splice"
+                          );
+                        }
+                      }
+                    } else if (!isCookieAlreadyHere) {
+                      console.log("<< isCookieAlreadyHere falsy");
+                      const tabNewCookies = [];
+                      tabNewCookies.push(cookiesToAdd);
+                      console.log(tabNewCookies, "<< push sur tabcookies");
+                      const tabCookiesToStr = JSON.stringify(tabNewCookies);
+                      console.log(tabNewCookies, "<< tabCookiesToStr");
+                      Cookies.set("userFavorites", tabCookiesToStr, {
+                        expires: 10,
+                      });
+                      console.log(
+                        Cookies.get("userFavorites"),
+                        "cookie créé : userfavorites"
+                      );
+                    }
                   }}
                 >
                   Saved to <br />

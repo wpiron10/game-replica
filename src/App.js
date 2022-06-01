@@ -68,32 +68,12 @@ function App() {
   // création d'une fonction d'ajout aux favoris
   const [dataFavorites, setDataFavorites] = useState([]);
 
-  const [tokenFav, setTokenFav] = useState(
-    Cookies.get("userFavorites") || null
-  );
-
-  const setFavorites = (elem) => {
-    console.log(elem, "<<<   datafav");
-
-    if (elem) {
-      Cookies.set("userFavorites", elem, { expires: 7 });
-
-      const strFavorite = Cookies.get("userFavorites");
-      console.log(strFavorite, "<<<<< 1 strfavorite");
-
-      const objFavorite = JSON.parse(strFavorite);
-      console.log(objFavorite, "<<<< 2 objfavorite");
-
-      for (let i = 0; i < dataFavorites.length; i++) {
-        console.log(dataFavorites[i], "datafav i avant le if");
-        if (dataFavorites.indexOf(dataFavorites[i]) === -1) {
-          console.log(dataFavorites[i], "<<<< pas dans datafavtab");
-          dataFavorites.push(objFavorite);
-        }
-      }
-      setDataFavorites(dataFavorites);
-    }
-  };
+  // const setFavorites = (tab) => {
+  //   console.log(tab, "<<<   tab");
+  //   if (dataFavorites.length >= 1) {
+  //   } else if (dataFavorites.length < 1) {
+  //   }
+  // };
 
   return (
     <div className="app">
@@ -108,16 +88,19 @@ function App() {
                 element={
                   <Favorites
                     setUser={setUser}
-                    dataFavorites={dataFavorites}
-                    setDataFavorites={setDataFavorites}
-                    setFavorites={setFavorites}
+                    // dataFavorites={dataFavorites}
+                    // setDataFavorites={setDataFavorites}
+                    // setFavorites={setFavorites}
                   />
                 }
               />
               <Route
                 path="/game/:id"
                 element={
-                  <Game aboutRef={aboutRef} setFavorites={setFavorites} />
+                  <Game
+                    aboutRef={aboutRef}
+                    // setFavorites={setFavorites}
+                  />
                 }
               />
             </Routes>
