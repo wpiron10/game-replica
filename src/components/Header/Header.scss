@@ -7,7 +7,7 @@
   display: flex;
   position: sticky;
   top: 0px;
-  z-index: 100;
+  z-index: 1;
 
   background-color: #1f2023;
 
@@ -42,16 +42,26 @@
       flex-direction: row;
       width: 30%;
       align-items: center;
-      h2 {
-        color: white;
-        font-size: 20px;
-        font-weight: 500;
-        margin: 0;
-        white-space: nowrap;
+      .header-favorites {
+        &:hover {
+          cursor: pointer;
+        }
+        h2 {
+          color: white;
+          font-size: 20px;
+          font-weight: 500;
+          margin: 0;
+          white-space: nowrap;
+        }
       }
-      button {
+
+      .header-username-img {
+        width: 35px;
         height: 35px;
-        width: 84px;
+        border-radius: 50%;
+      }
+
+      button {
         top: 0px;
         border-radius: 8px;
         border: none;
@@ -62,6 +72,18 @@
         &:hover {
           cursor: pointer;
           background-color: darken(#ff4655, 5);
+        }
+      }
+      .header-disconnect {
+        height: 35px;
+        width: 100px;
+      }
+      .header-login-signup {
+        display: flex;
+        gap: 10px;
+        .btn-login-signup {
+          height: 35px;
+          width: 85px;
         }
       }
     }

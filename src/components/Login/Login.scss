@@ -1,0 +1,127 @@
+.content-close-form {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: flex-end;
+  .close-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    // border: 3px red solid;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.content-form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  height: 100%;
+  h2 {
+    margin-bottom: 0px;
+  }
+  .left-content-form {
+    width: 50%;
+    height: 80%;
+    font-size: 0.9em;
+    // border: 3px red solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .subsection-left-title-line {
+      width: 10%;
+      height: 10px;
+      border-top: #ff4655 solid 10px;
+      margin-top: 0px;
+    }
+    .left-content-reasons {
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: #ff4655;
+      }
+    }
+    .left-content-reason-icon {
+      width: 10%;
+    }
+    .left-content-reason {
+      width: 90%;
+    }
+  }
+  .right-content-form {
+    color: white;
+    width: 50%;
+    height: 80%;
+    padding-left: 10px;
+    border-left: 1px #ff4655 solid;
+    .login-form-title {
+      display: flex;
+      align-items: center;
+      height: 20%;
+      margin: 0;
+      font-size: 2em;
+      padding-left: 10px;
+    }
+    .login-form {
+      box-sizing: border-box;
+      //   border: 3px purple solid;
+      display: flex;
+      flex-direction: column;
+      height: 60%;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+
+      .login-form-input {
+        background-color: #fafafa;
+        width: 90%;
+        height: 5vh;
+        border-radius: 5px;
+        padding-left: 5px;
+        &:focus {
+          outline: none !important;
+          border: 1px solid white;
+          box-shadow: 0 0 10px #b3b3b3;
+        }
+      }
+
+      .login-form-submit {
+        width: 150px;
+        height: 35px;
+
+        top: 0px;
+        border-radius: 8px;
+        border: none;
+        margin: 0;
+        background-color: #ff4655;
+        color: white;
+        font-weight: 600;
+        &:hover {
+          cursor: pointer;
+          background-color: darken(#ff4655, 5);
+        }
+      }
+    }
+    .right-content-signup {
+      height: 20%;
+      display: flex;
+      flex-direction: column;
+      //   border: 3px yellow solid;
+      padding-left: 10px;
+    }
+    .right-content-signup-redirect {
+      color: #b3b3b3;
+      text-decoration: underline;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

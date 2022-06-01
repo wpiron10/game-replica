@@ -4,8 +4,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Cookies from "js-cookie";
 
-const Game = ({ aboutRef }) => {
+const Game = ({ aboutRef, setFavorites }) => {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [dataOtherGames, setDataOtherGames] = useState([]);
@@ -73,7 +74,21 @@ const Game = ({ aboutRef }) => {
           <div className="subsection-right-sub-section">
             <div className="right-content-collection-review">
               <div className="right-content-collection-review-btn">
-                <div className="right-content-collection-review-btn-col-1">
+                <div
+                  className="right-content-collection-review-btn-col-1"
+                  onClick={async () => {
+                    const toAddCookies = {
+                      id: data.id,
+                      name: data.name,
+                      image: data.background_image,
+                    };
+                    // console.log(data, "data");
+
+                    const favoriteToStr = JSON.stringify(toAddCookies);
+
+                    setFavorites(favoriteToStr);
+                  }}
+                >
                   Saved to <br />
                   <p id="Collection">Collection</p>
                 </div>
