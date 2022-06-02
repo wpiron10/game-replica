@@ -94,10 +94,11 @@ const Game = ({ aboutRef, setFavorites }) => {
                 {removeToFavorites ? (
                   <div
                     className="right-content-collection-review-btn-col-1-remove"
-                    onClick={async (index) => {
+                    onClick={async () => {
                       const cookiesToRemove = {
                         id: data.id,
                       };
+                      console.log(cookiesToRemove, "<<    cookie to remove");
                       const cookieToTab = JSON.parse(
                         Cookies.get("userFavorites")
                       );

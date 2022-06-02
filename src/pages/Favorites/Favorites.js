@@ -9,7 +9,7 @@ const Favorites = ({ setUser }) => {
 
   // création d'une state pour afficher : false : pas de fav - true : map sur les cookies
   const [cookieEmpty, setCookieEmpty] = useState(false);
-  const [dataFavoritesToTab, setDataFavoritesToTab] = useState(null);
+  const [dataFavoritesToTab, setDataFavoritesToTab] = useState();
 
   // récupération du coookie
 
@@ -24,9 +24,9 @@ const Favorites = ({ setUser }) => {
 
     // si quand on le parse, la longueur du tableau est > 0, on affiche le resultat
 
-    if (dataFavoritesToTab && dataFavoritesToTab.length > 0) {
-      setCookieEmpty(true);
-    }
+    // if (dataFavoritesToTab && dataFavoritesToTab.length > 0) {
+
+    // }
   }
 
   return (
@@ -36,9 +36,9 @@ const Favorites = ({ setUser }) => {
       </div>
       <div className="result-section">
         <div className="results">
-          {cookieEmpty === true ? (
-            dataFavoritesToTab.map((favoriteGame, index) => {
-              console.log(dataFavoritesToTab, "datafavorites ");
+          {dataFavoritesStr ? (
+            getCookie.map((favoriteGame, index) => {
+              console.log(getCookie, "datafavorites ");
 
               return (
                 <div className="result-card" key={index}>
@@ -47,13 +47,12 @@ const Favorites = ({ setUser }) => {
                       icon="fa-solid fa-bookmark"
                       className="result-favorite-btn"
                       onClick={() => {
-                        console.log(dataFavoritesToTab, "avant splice");
+                        console.log(getCookie, "avant splice");
 
-                        dataFavoritesToTab.splice(favoriteGame, 1);
-                        console.log(dataFavoritesToTab, "apres splice");
+                        getCookie.splice(favoriteGame, 1);
+                        console.log(getCookie, "apres splice");
 
-                        const dataFavoritesToStr =
-                          JSON.stringify(dataFavoritesToTab);
+                        const dataFavoritesToStr = JSON.stringify(getCookie);
                         console.log(
                           dataFavoritesToStr,
                           "<< dataFavoritesToStr"
