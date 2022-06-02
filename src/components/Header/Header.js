@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
-
+// imports des cookies
+import Cookies from "js-cookie";
 const Header = ({ setUser, token, setToken }) => {
-  const [dataProfile, setDataProfile] = useState();
+  const [dataProfile, setDataProfile] = useState(Cookies.get("userToken"));
+
   const [modalIsOpen, setIsOpen] = useState(false);
   const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const Header = ({ setUser, token, setToken }) => {
 
         <div className="header-menu">
           <div className="header-favorites">
-            {token !== null ? (
+            {token ? (
               <Link to="/favorites">
                 <h2>My Collection</h2>
               </Link>
@@ -38,7 +40,7 @@ const Header = ({ setUser, token, setToken }) => {
               </h2>
             )}
           </div>
-          {token !== null ? (
+          {token ? (
             <>
               <p>{dataProfile.username}</p>
               {/* {console.log(dataProfile.picture)} */}

@@ -99,7 +99,31 @@
                   color: green;
                 }
               }
+              #CollectionRemove {
+                color: grey;
+
+                margin: 0;
+                &:hover {
+                  color: red;
+                }
+              }
             }
+            .right-content-collection-review-btn-col-1-remove {
+              width: 80%;
+              font-size: 0.9em;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              #CollectionRemove {
+                color: grey;
+                font-size: 0.9em;
+                margin: 0;
+                &:hover {
+                  color: red;
+                }
+              }
+            }
+
             .right-content-collection-review-btn-col-2 {
               width: 20%;
               display: flex;
@@ -285,6 +309,77 @@
     }
   }
 
+  .addToFavorite-content {
+    position: fixed;
+    height: 50px;
+    width: 100vh;
+    bottom: 10px;
+    display: flex;
+    z-index: 1;
+    // border: 3px green solid;
+    background-color: #464444;
+    border-radius: 10px;
+    transition: all 450ms;
+    transform: translateY(2);
+    animation-name: favorite-slidein;
+    animation-duration: 1s;
+    @keyframes favorite-slidein {
+      from {
+        margin-left: 100%;
+        // width: 300%;
+      }
+
+      to {
+        margin-left: 0%;
+        // width: 100%;
+      }
+    }
+    &:hover {
+      // cursor: pointer;
+      transform: translateY(-5px);
+      background-color: #3f3e3e;
+    }
+
+    .addToFavorite-message {
+      height: 100%;
+      width: 80%;
+      display: flex;
+      justify-content: flex-start;
+      padding: 0 20px;
+      align-items: center;
+      // border: 3px red solid;
+      position: relative;
+      top: 0px;
+      left: 0%;
+      text-overflow: ellipsis;
+      .message-link-to-favorites {
+        color: white;
+      }
+      .square-check {
+        color: #20aa87;
+        margin-right: 10px;
+      }
+      .square-remove {
+        color: #ff4655;
+        margin-right: 10px;
+      }
+    }
+    .addToFavorite-close {
+      height: 100%;
+      width: 20%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+      align-items: center;
+      // border: 3px red solid;
+      position: relative;
+      top: 0px;
+      left: 0%;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
   .ratings-section {
     .ratings-subsection-title {
       width: 10%;

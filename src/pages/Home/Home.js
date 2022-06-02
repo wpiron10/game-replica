@@ -51,8 +51,8 @@ const Home = () => {
         }
 
         const response = await axios.get(
-          `https://game-replica-backend.herokuapp.com/?page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
-          // `https://api.rawg.io/api/games?key=${ApiKey}&page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
+          `http://localhost:4000/?page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
+          // `https://game-replica-backend.herokuapp.com/?page=${page}&search=${search}${ParentPlatformFilter}${PlatformFilter}${OrderFilter}`
         );
         setData(response.data);
         setIsLoading(false);

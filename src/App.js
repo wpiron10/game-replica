@@ -26,9 +26,13 @@ import {
   faThumbsDown,
   faThumbsUp,
   faCircleXmark,
+  faSquareCheck,
+  faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
   faTrash,
+  faSquareXmark,
+  faSquareCheck,
   faUserNinja,
   faMagnifyingGlass,
   faAngleRight,

@@ -16,18 +16,23 @@ const Game = ({ aboutRef, setFavorites }) => {
   const [active, setActive] = useState(false);
   const [thumbUp, setThumbUp] = useState(false);
   const [thumbDown, setThumbDown] = useState(false);
+  const [addToFavoriteMessage, setAddToFavoriteMessage] = useState(false);
+  const [removeToFavoriteMessage, setRemoveToFavoriteMessage] = useState(false);
+  const [removeToFavorites, setRemoveToFavorites] = useState(false);
 
   useEffect(() => {
     const fetchDataGame = async () => {
       try {
         const response = await axios.get(
-          `https://game-replica-backend.herokuapp.com/games/${id}`
+          `http://localhost:4000/games/${id}`
+          // `https://game-replica-backend.herokuapp.com/games/${id}`
           // `https://api.rawg.io/api/games/${id}?key=${ApiKey}`
         );
         setData(response.data);
         if (response.data.slug) {
           const secondResponse = await axios.get(
-            `https://game-replica-backend.herokuapp.com/relatedgames?slug=${response.data.slug}`
+            `http://localhost:4000/relatedgames?slug=${response.data.slug}`
+            // `https://game-replica-backend.herokuapp.com/relatedgames?slug=${response.data.slug}`
             // `https://api.rawg.io/api/games/${response.data.slug}/game-series?key=${ApiKey}`
           );
           setDataOtherGames(secondResponse.data);
@@ -49,6 +54,18 @@ const Game = ({ aboutRef, setFavorites }) => {
       behavior: "smooth",
     });
   };
+
+  // if (Cookies.get("userFavorites")) {
+  //   const cookieToTab = JSON.parse(Cookies.get("userFavorites"));
+  //   const cookiesToRemove = {
+  //     id: data.id,
+  //   };
+
+  //   cookieToTab.find((elem) => elem.id === cookiesToRemove.id);
+  //   if (!cookieToTab) {
+  //     setRemoveToFavorites(false);
+  //   }
+  // }
 
   return isLoading === true ? (
     <div>
@@ -74,56 +91,121 @@ const Game = ({ aboutRef, setFavorites }) => {
           <div className="subsection-right-sub-section">
             <div className="right-content-collection-review">
               <div className="right-content-collection-review-btn">
-                <div
-                  className="right-content-collection-review-btn-col-1"
-                  onClick={async () => {
-                    const cookiesToAdd = {
-                      id: data.id,
-                      name: data.name,
-                      image: data.background_image,
-                    };
+                {removeToFavorites ? (
+                  <div
+                    className="right-content-collection-review-btn-col-1-remove"
+                    onClick={async (index) => {
+                      const cookiesToRemove = {
+                        id: data.id,
+                      };
+                      const cookieToTab = JSON.parse(
+                        Cookies.get("userFavorites")
+                      );
 
-                    const isCookieAlreadyHere = Cookies.get("userFavorites");
+                      cookieToTab.find(
+                        (elem) => elem.id === cookiesToRemove.id
+                      );
+                      cookieToTab.splice(cookiesToRemove, 1);
 
-                    if (isCookieAlreadyHere) {
-                      const cookieToObj = JSON.parse(isCookieAlreadyHere);
+                      if (cookieToTab.length < 1)
+                        Cookies.remove("userFavorites");
+                      else {
+                        const tabCookiesToStr = JSON.stringify(cookieToTab);
+                        Cookies.set("userFavorites", tabCookiesToStr, {
+                          expires: 10,
+                        });
+                      }
 
-                      console.log(cookieToObj, "<< isCookieAlreadyHere truthy");
+                      setRemoveToFavorites(false);
+                      setAddToFavoriteMessage(false);
+                      setRemoveToFavoriteMessage(true);
+                    }}
+                  >
+                    Remove from <br />
+                    <p id="CollectionRemove">Collection</p>
+                  </div>
+                ) : (
+                  <div
+                    className="right-content-collection-review-btn-col-1"
+                    onClick={async () => {
+                      const cookiesToAdd = {
+                        id: data.id,
+                        name: data.name,
+                        image: data.background_image,
+                      };
 
-                      for (let i = 0; i < cookieToObj.length; i++) {
-                        console.log(i, "<<<< i");
-                        if (cookieToObj.indexOf(cookiesToAdd.id) === -1) {
+                      const isCookieAlreadyHere = Cookies.get("userFavorites");
+
+                      if (isCookieAlreadyHere) {
+                        const cookieToTab = JSON.parse(isCookieAlreadyHere);
+
+                        console.log(
+                          cookieToTab,
+                          "<< isCookieAlreadyHere truthy"
+                        );
+
+                        // for (let i = 0; i < cookieToTab.length; i++) {
+                        //   console.log(i, "<<<< i");
+                        const isCookieInTab = cookieToTab.find(
+                          (elem) => elem.id === cookiesToAdd.id
+                        );
+                        if (!isCookieInTab) {
                           console.log(
                             cookiesToAdd.id,
                             "<< absent dans le tableau : push"
                           );
-                        } else if (cookieToObj.indexOf(cookiesToAdd.id)) {
+                          cookieToTab.push(cookiesToAdd);
+
+                          console.log(
+                            cookieToTab,
+                            "<< push de cookie to add dans cookie to tab"
+                          );
+                          const tabCookiesToStr = JSON.stringify(cookieToTab);
+                          Cookies.set("userFavorites", tabCookiesToStr, {
+                            expires: 10,
+                          });
+                          console.log(
+                            tabCookiesToStr,
+                            "<< ccookie créé et stringifié"
+                          );
+                          // cookieToTab.push(cookiesToAdd);
+                          // console.log(cookieToTab, "push sur cookie to obj");
+                        } else {
                           console.log(
                             cookiesToAdd.id,
                             "<< déjà présent dans le tableau : splice"
                           );
+                          cookieToTab.splice(cookiesToAdd, 1);
+
+                          // }
                         }
+                      } else if (!isCookieAlreadyHere) {
+                        console.log("<< isCookieAlreadyHere falsy");
+                        const tabNewCookies = [];
+                        tabNewCookies.push(cookiesToAdd);
+                        console.log(tabNewCookies, "<< push sur tabcookies");
+                        const tabCookiesToStr = JSON.stringify(tabNewCookies);
+                        console.log(tabNewCookies, "<< tabCookiesToStr");
+                        Cookies.set("userFavorites", tabCookiesToStr, {
+                          expires: 10,
+                        });
+                        console.log(
+                          Cookies.get("userFavorites"),
+                          "cookie créé : userfavorites"
+                        );
                       }
-                    } else if (!isCookieAlreadyHere) {
-                      console.log("<< isCookieAlreadyHere falsy");
-                      const tabNewCookies = [];
-                      tabNewCookies.push(cookiesToAdd);
-                      console.log(tabNewCookies, "<< push sur tabcookies");
-                      const tabCookiesToStr = JSON.stringify(tabNewCookies);
-                      console.log(tabNewCookies, "<< tabCookiesToStr");
-                      Cookies.set("userFavorites", tabCookiesToStr, {
-                        expires: 10,
-                      });
-                      console.log(
-                        Cookies.get("userFavorites"),
-                        "cookie créé : userfavorites"
-                      );
-                    }
-                  }}
-                >
-                  Saved to <br />
-                  <p id="Collection">Collection</p>
-                </div>
+                      if (Cookies.get("userFavorites")) {
+                        setAddToFavoriteMessage(true);
+                        setRemoveToFavoriteMessage(false);
+                        setRemoveToFavorites(true);
+                      }
+                    }}
+                  >
+                    Save to <br />
+                    <p id="Collection">Collection</p>
+                  </div>
+                )}
+
                 <div className="right-content-collection-review-btn-col-2">
                   <FontAwesomeIcon icon="fa-solid fa-bookmark" />
                 </div>
@@ -249,6 +331,53 @@ const Game = ({ aboutRef, setFavorites }) => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        {addToFavoriteMessage && (
+          <div className="addToFavorite-content">
+            <div className="addToFavorite-message">
+              <FontAwesomeIcon
+                icon="fa-solid fa-square-check"
+                className="square-check"
+              />
+              {data.name} a bien été ajouté à&nbsp;
+              <Link to="/favorites" className="message-link-to-favorites">
+                vos favoris
+              </Link>
+            </div>
+            <div className="addToFavorite-close">
+              <FontAwesomeIcon
+                icon="fa-solid fa-circle-xmark"
+                onClick={() => {
+                  setAddToFavoriteMessage(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {removeToFavoriteMessage && (
+          <div className="addToFavorite-content">
+            <div className="addToFavorite-message">
+              <FontAwesomeIcon
+                icon="fa-solid fa-square-xmark"
+                className="square-remove"
+              />
+              {data.name} a bien été retiré de&nbsp;
+              <Link to="/favorites" className="message-link-to-favorites">
+                vos favoris
+              </Link>
+            </div>
+            <div className="addToFavorite-close">
+              <FontAwesomeIcon
+                className="close-form"
+                icon="fa-solid fa-circle-xmark"
+                onClick={() => {
+                  setRemoveToFavoriteMessage(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="ratings-section">
         <div className="ratings-subsection-title">
