@@ -7,27 +7,41 @@ import { useNavigate } from "react-router-dom";
 const Favorites = ({ setUser }) => {
   const navigate = useNavigate();
 
-  // création d'une state pour afficher : false : pas de fav - true : map sur les cookies
-  const [cookieEmpty, setCookieEmpty] = useState(false);
-  const [dataFavoritesToTab, setDataFavoritesToTab] = useState();
+  // création d'une state
+
+  const [isCookieRemoved, setisCookieRemoved] = useState();
 
   // récupération du coookie
 
   const dataFavoritesStr = Cookies.get("userFavorites");
-  console.log(dataFavoritesStr, "userfav");
+  // console.log(dataFavoritesStr, "userfav");
 
+  // const [getCookie, setGetCookie] = useState();
+  let getCookie;
   // s'il existe, on le parse
-
   if (dataFavoritesStr) {
-    const getCookie = JSON.parse(Cookies.get("userFavorites"));
-    setDataFavoritesToTab(getCookie);
+    getCookie = JSON.parse(Cookies.get("userFavorites"));
 
-    // si quand on le parse, la longueur du tableau est > 0, on affiche le resultat
-
-    // if (dataFavoritesToTab && dataFavoritesToTab.length > 0) {
-
-    // }
+    // setGetCookie(JSON.parse(Cookies.get("userFavorites")));
   }
+
+  console.log(getCookie, "<<< getcookie");
+
+  const isGameIsAlreadyFavorite = (id) => {
+    const recupFav = Cookies.get("userFavorites");
+    if (recupFav && recupFav.length > 0) {
+      const arrayFav = JSON.parse(recupFav);
+      let isPresent = false;
+      for (let i = 0; i < arrayFav.length; i++) {
+        if (arrayFav[i].id === id) {
+          isPresent = i;
+        }
+      }
+      return isPresent;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <div>
@@ -49,7 +63,10 @@ const Favorites = ({ setUser }) => {
                       onClick={() => {
                         console.log(getCookie, "avant splice");
 
-                        getCookie.splice(favoriteGame, 1);
+                        getCookie.splice(
+                          isGameIsAlreadyFavorite(getCookie.id),
+                          1
+                        );
                         console.log(getCookie, "apres splice");
 
                         const dataFavoritesToStr = JSON.stringify(getCookie);
@@ -60,6 +77,15 @@ const Favorites = ({ setUser }) => {
                         Cookies.set("userFavorites", dataFavoritesToStr, {
                           expires: 10,
                         });
+
+                        if (getCookie.length < 1)
+                          Cookies.remove("userFavorites");
+                        else {
+                          const tabCookiesToStr = JSON.stringify(getCookie);
+                          Cookies.set("userFavorites", tabCookiesToStr, {
+                            expires: 10,
+                          });
+                        }
                       }}
                     />
                   </div>

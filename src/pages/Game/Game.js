@@ -18,7 +18,6 @@ const Game = ({ aboutRef, setFavorites }) => {
   const [thumbDown, setThumbDown] = useState(false);
   const [addToFavoriteMessage, setAddToFavoriteMessage] = useState(false);
   const [removeToFavoriteMessage, setRemoveToFavoriteMessage] = useState(false);
-  const [removeToFavorites, setRemoveToFavorites] = useState(false);
 
   useEffect(() => {
     const fetchDataGame = async () => {
@@ -53,6 +52,22 @@ const Game = ({ aboutRef, setFavorites }) => {
       left: 0,
       behavior: "smooth",
     });
+  };
+
+  const isGameIsAlreadyFavorite = (id) => {
+    const recupFav = Cookies.get("userFavorites");
+    if (recupFav && recupFav.length > 0) {
+      const arrayFav = JSON.parse(recupFav);
+      let isPresent = false;
+      for (let i = 0; i < arrayFav.length; i++) {
+        if (arrayFav[i].id === id) {
+          isPresent = i;
+        }
+      }
+      return isPresent;
+    } else {
+      return false;
+    }
   };
 
   // if (Cookies.get("userFavorites")) {
@@ -91,22 +106,17 @@ const Game = ({ aboutRef, setFavorites }) => {
           <div className="subsection-right-sub-section">
             <div className="right-content-collection-review">
               <div className="right-content-collection-review-btn">
-                {removeToFavorites ? (
+                {isGameIsAlreadyFavorite(data.id) ? (
                   <div
                     className="right-content-collection-review-btn-col-1-remove"
                     onClick={async () => {
-                      const cookiesToRemove = {
-                        id: data.id,
-                      };
-                      console.log(cookiesToRemove, "<<    cookie to remove");
+                      // console.log(cookiesToRemove, "<<    cookie to remove");
                       const cookieToTab = JSON.parse(
                         Cookies.get("userFavorites")
                       );
 
-                      cookieToTab.find(
-                        (elem) => elem.id === cookiesToRemove.id
-                      );
-                      cookieToTab.splice(cookiesToRemove, 1);
+                      cookieToTab.find((elem) => elem.id === data.id);
+                      cookieToTab.splice(isGameIsAlreadyFavorite(data.id), 1);
 
                       if (cookieToTab.length < 1)
                         Cookies.remove("userFavorites");
@@ -117,7 +127,6 @@ const Game = ({ aboutRef, setFavorites }) => {
                         });
                       }
 
-                      setRemoveToFavorites(false);
                       setAddToFavoriteMessage(false);
                       setRemoveToFavoriteMessage(true);
                     }}
@@ -140,65 +149,69 @@ const Game = ({ aboutRef, setFavorites }) => {
                       if (isCookieAlreadyHere) {
                         const cookieToTab = JSON.parse(isCookieAlreadyHere);
 
-                        console.log(
-                          cookieToTab,
-                          "<< isCookieAlreadyHere truthy"
-                        );
+                        // console.log(
+                        //   cookieToTab,
+                        //   "<< isCookieAlreadyHere truthy"
+                        // );
 
                         // for (let i = 0; i < cookieToTab.length; i++) {
                         //   console.log(i, "<<<< i");
                         const isCookieInTab = cookieToTab.find(
                           (elem) => elem.id === cookiesToAdd.id
                         );
+
                         if (!isCookieInTab) {
-                          console.log(
-                            cookiesToAdd.id,
-                            "<< absent dans le tableau : push"
-                          );
+                          // console.log(
+                          //   cookiesToAdd.id,
+                          //   "<< absent dans le tableau : push"
+                          // );
                           cookieToTab.push(cookiesToAdd);
 
-                          console.log(
-                            cookieToTab,
-                            "<< push de cookie to add dans cookie to tab"
-                          );
+                          // console.log(
+                          //   cookieToTab,
+                          //   "<< push de cookie to add dans cookie to tab"
+                          // );
                           const tabCookiesToStr = JSON.stringify(cookieToTab);
                           Cookies.set("userFavorites", tabCookiesToStr, {
                             expires: 10,
                           });
-                          console.log(
-                            tabCookiesToStr,
-                            "<< ccookie créé et stringifié"
-                          );
+                          // console.log(
+                          //   tabCookiesToStr,
+                          //   "<< ccookie créé et stringifié"
+                          // );
                           // cookieToTab.push(cookiesToAdd);
                           // console.log(cookieToTab, "push sur cookie to obj");
                         } else {
-                          console.log(
-                            cookiesToAdd.id,
-                            "<< déjà présent dans le tableau : splice"
+                          // console.log(
+                          //   cookiesToAdd.id,
+                          //   "<< déjà présent dans le tableau : splice"
+                          // );
+                          cookieToTab.splice(
+                            isGameIsAlreadyFavorite(data.id),
+                            1
                           );
-                          cookieToTab.splice(cookiesToAdd, 1);
 
                           // }
                         }
-                      } else if (!isCookieAlreadyHere) {
-                        console.log("<< isCookieAlreadyHere falsy");
+                      } else {
+                        // console.log("<< isCookieAlreadyHere falsy");
                         const tabNewCookies = [];
                         tabNewCookies.push(cookiesToAdd);
-                        console.log(tabNewCookies, "<< push sur tabcookies");
+                        console.log("yoMonPoto =>", cookiesToAdd);
+                        // console.log(tabNewCookies, "<< push sur tabcookies");
                         const tabCookiesToStr = JSON.stringify(tabNewCookies);
-                        console.log(tabNewCookies, "<< tabCookiesToStr");
+                        // console.log(tabNewCookies, "<< tabCookiesToStr");
                         Cookies.set("userFavorites", tabCookiesToStr, {
                           expires: 10,
                         });
-                        console.log(
-                          Cookies.get("userFavorites"),
-                          "cookie créé : userfavorites"
-                        );
+                        // console.log(
+                        //   Cookies.get("userFavorites"),
+                        //   "cookie créé : userfavorites"
+                        // );
                       }
                       if (Cookies.get("userFavorites")) {
                         setAddToFavoriteMessage(true);
                         setRemoveToFavoriteMessage(false);
-                        setRemoveToFavorites(true);
                       }
                     }}
                   >
