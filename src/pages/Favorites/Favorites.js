@@ -9,39 +9,9 @@ const Favorites = ({ setUser }) => {
 
   // création d'une state
 
-  const [isCookieRemoved, setisCookieRemoved] = useState();
-
-  // récupération du coookie
-
-  const dataFavoritesStr = Cookies.get("userFavorites");
-  // console.log(dataFavoritesStr, "userfav");
-
-  // const [getCookie, setGetCookie] = useState();
-  let getCookie;
-  // s'il existe, on le parse
-  if (dataFavoritesStr) {
-    getCookie = JSON.parse(Cookies.get("userFavorites"));
-
-    // setGetCookie(JSON.parse(Cookies.get("userFavorites")));
-  }
-
-  console.log(getCookie, "<<< getcookie");
-
-  const isGameIsAlreadyFavorite = (id) => {
-    const recupFav = Cookies.get("userFavorites");
-    if (recupFav && recupFav.length > 0) {
-      const arrayFav = JSON.parse(recupFav);
-      let isPresent = false;
-      for (let i = 0; i < arrayFav.length; i++) {
-        if (arrayFav[i].id === id) {
-          isPresent = i;
-        }
-      }
-      return isPresent;
-    } else {
-      return false;
-    }
-  };
+  const [favorites, setFavorites] = useState(
+    Cookies.get("userFavorites") || null
+  );
 
   return (
     <div>
@@ -50,10 +20,8 @@ const Favorites = ({ setUser }) => {
       </div>
       <div className="result-section">
         <div className="results">
-          {dataFavoritesStr ? (
-            getCookie.map((favoriteGame, index) => {
-              console.log(getCookie, "datafavorites ");
-
+          {favorites ? (
+            JSON.parse(favorites).map((favoriteGame, index) => {
               return (
                 <div className="result-card" key={index}>
                   <div className="result-favorite-content">
@@ -61,30 +29,16 @@ const Favorites = ({ setUser }) => {
                       icon="fa-solid fa-bookmark"
                       className="result-favorite-btn"
                       onClick={() => {
-                        console.log(getCookie, "avant splice");
+                        const tab = JSON.parse(favorites);
+                        tab.splice(index, 1);
 
-                        getCookie.splice(
-                          isGameIsAlreadyFavorite(getCookie.id),
-                          1
-                        );
-                        console.log(getCookie, "apres splice");
-
-                        const dataFavoritesToStr = JSON.stringify(getCookie);
-                        console.log(
-                          dataFavoritesToStr,
-                          "<< dataFavoritesToStr"
-                        );
-                        Cookies.set("userFavorites", dataFavoritesToStr, {
-                          expires: 10,
-                        });
-
-                        if (getCookie.length < 1)
+                        if (tab.length > 0) {
+                          const str = JSON.stringify(tab);
+                          Cookies.set("userFavorites", str);
+                          setFavorites(str);
+                        } else {
                           Cookies.remove("userFavorites");
-                        else {
-                          const tabCookiesToStr = JSON.stringify(getCookie);
-                          Cookies.set("userFavorites", tabCookiesToStr, {
-                            expires: 10,
-                          });
+                          setFavorites(null);
                         }
                       }}
                     />

@@ -149,43 +149,18 @@ const Game = ({ aboutRef, setFavorites }) => {
                       if (isCookieAlreadyHere) {
                         const cookieToTab = JSON.parse(isCookieAlreadyHere);
 
-                        // console.log(
-                        //   cookieToTab,
-                        //   "<< isCookieAlreadyHere truthy"
-                        // );
-
-                        // for (let i = 0; i < cookieToTab.length; i++) {
-                        //   console.log(i, "<<<< i");
                         const isCookieInTab = cookieToTab.find(
                           (elem) => elem.id === cookiesToAdd.id
                         );
 
                         if (!isCookieInTab) {
-                          // console.log(
-                          //   cookiesToAdd.id,
-                          //   "<< absent dans le tableau : push"
-                          // );
                           cookieToTab.push(cookiesToAdd);
 
-                          // console.log(
-                          //   cookieToTab,
-                          //   "<< push de cookie to add dans cookie to tab"
-                          // );
                           const tabCookiesToStr = JSON.stringify(cookieToTab);
                           Cookies.set("userFavorites", tabCookiesToStr, {
                             expires: 10,
                           });
-                          // console.log(
-                          //   tabCookiesToStr,
-                          //   "<< ccookie créé et stringifié"
-                          // );
-                          // cookieToTab.push(cookiesToAdd);
-                          // console.log(cookieToTab, "push sur cookie to obj");
                         } else {
-                          // console.log(
-                          //   cookiesToAdd.id,
-                          //   "<< déjà présent dans le tableau : splice"
-                          // );
                           cookieToTab.splice(
                             isGameIsAlreadyFavorite(data.id),
                             1
@@ -194,20 +169,14 @@ const Game = ({ aboutRef, setFavorites }) => {
                           // }
                         }
                       } else {
-                        // console.log("<< isCookieAlreadyHere falsy");
                         const tabNewCookies = [];
                         tabNewCookies.push(cookiesToAdd);
                         console.log("yoMonPoto =>", cookiesToAdd);
-                        // console.log(tabNewCookies, "<< push sur tabcookies");
                         const tabCookiesToStr = JSON.stringify(tabNewCookies);
-                        // console.log(tabNewCookies, "<< tabCookiesToStr");
+
                         Cookies.set("userFavorites", tabCookiesToStr, {
                           expires: 10,
                         });
-                        // console.log(
-                        //   Cookies.get("userFavorites"),
-                        //   "cookie créé : userfavorites"
-                        // );
                       }
                       if (Cookies.get("userFavorites")) {
                         setAddToFavoriteMessage(true);
